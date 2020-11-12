@@ -1,12 +1,17 @@
-import React, { useState } from "react"
+import React, { useState, useReducer } from "react"
+import {initialState, todoReducer} from "./reducers"
 import "./App.css"
 
 function App() {
   //setup our to-do list
-  const [todoList, setToDoList] = useState([{ text: "move the trash" }, { text: "wash the car" }, { text: "kick the cat" }])
+  // const [todoList, setToDoList] = useState([{ text: "move the trash" }, { text: "wash the car" }, { text: "kick the cats" }])
 
   //setup our Input value
   const [value, setValue] = useState("")
+
+  const [state, dispatch] = useReducer(todoReducer, initialState)
+
+  console.log("this is my state", state)
 
   // handle the submit of form
   const handleSubmit = (e) => {
@@ -18,23 +23,23 @@ function App() {
 
   // add to-do
   const addToDo = (text) => {
-    const upDatedToDoList = [...todoList, { text }]
-    setToDoList(upDatedToDoList)
+    const upDatedToDoList = [...state.todoList, { text }]
+    state.setToDoList(upDatedToDoList)
   }
   // delete to-do
   const handledDelete = (todo) => {
-    const filteredToDoList = todoList.filter((currentToDListValue) => currentToDListValue !== todo)
-    setToDoList(filteredToDoList)
+    const filteredToDoList = state.todoList.filter((currentToDListValue) => currentToDListValue !== todo)
+    state.setToDoList(filteredToDoList)
   }
 
   return (
     <div className="App">
       <h1>Hello</h1>
       <div className="container"></div>
-      {todoList.map((todo, i) => (
+      {state.todoList.map((todo, i) => (
         <div key={i}>
           <p>{todo.text}</p>
-          <button onClick={() => handledDelete(todo)}>Delete</button>
+          <button onClick={() => handledDelete(state.todo)}>Delete</button>
         </div>
       ))}
       <div>
